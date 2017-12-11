@@ -1,8 +1,6 @@
 import {
   LoginScreen,
-  MenuScreen,
   TableScreen,
-  BillScreen,
 } from 'screens';
 import {
   toStackNavigator,
@@ -10,4 +8,8 @@ import {
 } from 'utils';
 
 
-export const Yberri = toStackNavigator([MenuScreen, LoginScreen, TableScreen, BillScreen])(componentToScreen);
+const componentToScreenForTable = componentToScreen({
+  title: 'Tables',
+});
+
+export const Yberri = toStackNavigator([LoginScreen, [TableScreen, componentToScreenForTable]])(componentToScreen);

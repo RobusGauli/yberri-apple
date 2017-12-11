@@ -12,6 +12,10 @@ import * as Animatable from 'react-native-animatable';
 const tableObj = ['Table 1', 'Table 2', 'Table 3', 'Table 4', 'Table 5', 'Table 6', 'Table 7', 'Table 8', 'Table 9'];
 
 class TableScreen extends Component {
+  static navigationOprions = {
+    title: 'Table',
+    header: <Text> love </Text>
+  }
   renderTable = obj => obj.map((row, index) => {
     return <View key={index} style={styles.grid}>
             {

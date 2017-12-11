@@ -9,15 +9,26 @@ const colors = {
   textSecondary: '#4aa7f1',
   textLight: 'white',
   lightBackground: '#ebf1f8',
-
+  backgroundColor: Platform.OS === 'ios' ? 'white' : '#ebf1f8',
+  cardColor: Platform.OS === 'ios' ? 'white' : '#ebf1f8',
 };
+
+const shadow = {
+
+  shadowOffset: { width: 10, height: 10 },
+  shadowColor: 'rgba(0, 0, 0, 0.5)',
+  shadowOpacity: 0.1,
+  shadowRadius: 5, 
+  
+};
+
 
 const font = {
   larger: Platform.OS === 'ios' ? 30 : 25,
   large: Platform.OS === 'ios' ? 20 : 16,
   regular: Platform.OS === 'ios' ? 18 : 14,
   small: 12,
-  family: 'Roboto',
+  family: Platform.OS == 'ios' ? 'ChalkboardSE-Regular' : 'Roboto',
 };
 
 const container = {
@@ -58,5 +69,5 @@ const button = {
 };
 
 export {
-  layout, colors, font, button,
+  layout, colors, font, button, shadow,
 };
