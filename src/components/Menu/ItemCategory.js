@@ -129,7 +129,7 @@ class Item extends React.Component {
 
   render() {
     const {
-      name
+      name,
     } = this.props;
     const {
       quantity,
@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 1,
     borderBottomWidth: 0.2,
     borderColor: '#26C6DA',
     borderRadius: 20,
@@ -171,23 +170,21 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   itemContainer: {
-    height: 60, 
+    height: 60,
     justifyContent: 'space-between',
     paddingLeft: 30,
-    
     backgroundColor: 'rgba(255, 255, 255, 1)',
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 20,
     marginRight: 20,
     marginTop: 3,
-    marginBottom :3,
+    marginBottom: 3,
     borderRadius: 20,
-    shadowOffset:{  width: 3,  height: 3,  },
+    shadowOffset: { width: 3, height: 3 },
     shadowColor: 'black',
     shadowOpacity: 0.1,
-
-  }
+  },
 });
 
 export {

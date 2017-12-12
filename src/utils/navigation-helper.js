@@ -1,13 +1,5 @@
 /* eslint-disable */
-import { StackNavigator } from 'react-navigation';
-
-//componentToScreen :: =>  (a -> b)
-// const componentToScreen = component => ({
-//   screen: component,
-//   navigationOptions: {
-//     header: null,
-//   },
-// });
+import { StackNavigator, NavigationActions } from 'react-navigation';
 
 
 const componentToScreen = (argOne, argTwo) => {
@@ -42,8 +34,17 @@ const toStackNavigator = components =>
       
       , {}), {initialRouteName: 'LoginScreen'});
 
+const navigateTo = (_context, routeName, params={}) => {
+  const navigate = NavigationActions.navigate({
+    routeName,
+    params,
+  })
+  _context.props.navigation.dispatch(navigate);
+
+}
 export {
   toStackNavigator,
   componentToScreen,
+  navigateTo,
 };
 

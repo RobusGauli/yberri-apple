@@ -32,21 +32,21 @@ export class LoginScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView contentContainerStyle={{flex: 1,  paddingLeft: 20, paddingRight: 20  }}>
           <View style={{height: '30%', justifyContent: 'center', alignItems: 'center'}} >
-          <Image
-            source={require('./yberrilogo.png')}
-            style={{ marginLeft: 60, marginTop: 100 }}
-          />
+            <Image
+              source={require('./yberrilogo.png')}
+              style={{ marginLeft: 60, marginTop: 100 }}
+            />
           </View>
           <Input placeholder={'USERNAME'} iconName='md-person' />
             <View style={{ marginTop: 10 }}/>
-            <Input placeholder={'PASSWORD'} iconName='md-lock' />
-              <TouchableOpacity style={styles.loginButtonContainer} onPress={this._onLoginPress}>
-                <Text style={styles.loginText}>
-                  Sign In
-                </Text>
-              </TouchableOpacity>
+              <Input placeholder={'PASSWORD'} iconName='md-lock' />
+                <TouchableOpacity style={styles.loginButtonContainer} onPress={this._onLoginPress}>
+                  <Text style={styles.loginText}>
+                    Sign In
+                  </Text>
+                </TouchableOpacity>
               <View style={{alignItems: 'flex-end', marginTop: 15, paddingRight: 10 }}>
-              <Text> Forget Password? </Text>
+                <Text> Forget Password? </Text>
               </View>
         </ScrollView>
       </View>

@@ -5,189 +5,138 @@ import {
 import {
   colors, layout, font,
 } from 'global';
-import { Button, Card } from 'yberri';
-import { Order } from 'components/Bill';
-
-import { Orders } from './ordersData';
+import { Table, BillItem } from 'components';
+import { Card } from 'yberri';
 
 class BillScreen extends Component {
-  state = {
-    orders: Orders,
+
+  constructor() {
+    super();
+    this.state = {
+      tableData: {},
+    }
   }
-  handler = index => (operator) => {
-    const operations = {
-      add: qty => qty + 1,
-      reduce: qty => (qty > 0 ? qty - 1 : 0),
-    };
-    const orders = [...this.state.orders];
-    const item = orders[index];
-    item.qty = operations[operator](item.qty);
-    this.setState({ orders });
+
+  componentWillMount = () => {
+    const { params } = this.props.navigation.state;
+    
+    this.setState({ tableData: params });
   }
+
+  onItemPress = (quantity, name) => {
+    //alert(quantity.toString() + name);
+  }
+
   render() {
+    const {
+      tableData,
+    } = this.state;
+
+    const billItemViews = tableData.orderData && Object.entries(tableData.orderData).map((val, index) => {
+      const [ itemName, itemData ] = val;
+      return (
+        <BillItem name={itemName} quantity={itemData.quantity} unitPrice={itemData.unitPrice} key={index} onItemPress={this.onItemPress}/>
+      );
+    });
+
     return (
-      <ScrollView>
-        <View style={[layout.container, styles.container]}>
-          <View style={styles.headerBar}>
-            <Text style={[styles.header, styles.bold]}>CART (4) </Text>
+      <View style={{flex: 1}}>
+      <ScrollView >
+        <View style={{ marginTop: 10 }}/>
+        <BillTitle tableName={tableData.tableName} />
+        {billItemViews}
+        <Card noAnimation style={styles.vatBillContainer}>
+          <View style={styles.vatBillItem}>
+            <Text style={styles.leftText}> Total Price </Text>
+            <Text style={styles.rightText}> Rs.1000 </Text>
           </View>
-          <Card style={[styles.singleInfo, styles.meta]}>            
-            <Text style={[styles.billTitle, styles.order]}>Order List #1</Text>
-            <Text style={[styles.billTitle, styles.time]}>Friday, 8 Dec, 2017 | 1:47 PM </Text>
-          </Card>         
-          <View style={styles.orders}>
-            <ScrollView>
-              {this.state.orders.map((item, index) => <Order key={item.id} index={index} item={item} handler={this.handler} />)}
-            </ScrollView>
+          <View style={{borderWidth: 0.1, height: 1, width: '93%'}}/>
+          <View style={styles.vatBillItem}>
+            <Text style={styles.leftText}> Vat(%) </Text>
+            <Text style={styles.rightText}> Rs.10 </Text>
           </View>
-          <Card style={styles.priceInfo}>
-            <View style={styles.singleContainer}>            
-              <Text style={[styles.bold, styles.billTitle]}>SubTotal</Text>
-              <Text style={[styles.bold, styles.price]}> Rs. 177,274 </Text>
-            </View>
-            <View style={styles.singleContainer}>            
-              <Text style={[styles.bold, styles.billTitle]}>Discount(0%)</Text>
-              <Text style={[styles.bold, styles.price]}> Rs. 0 </Text>
-            </View> 
-            <View style={styles.singleContainer}>            
-              <Text style={[styles.bold, styles.billTitle]}>VAT(13%)</Text>
-              <Text style={[styles.bold, styles.price]}> Rs. 17,274 </Text>
-            </View> 
-            <View style={styles.singleContainer}>            
-              <Text style={[styles.bold, styles.billTitle]}>Total</Text>
-              <Text style={[styles.bold, styles.price]}> Rs. 177,274 </Text>
-            </View>          
-          </Card>
+          <View style={{borderWidth: 0.1, height: 1, width: '93%'}}/>
+          <View style={styles.vatBillItem}>
+            <Text style={styles.leftText}> Total Price </Text>
+            <Text style={styles.rightText}> Rs.1000 </Text>
+          </View>
+        </Card>
 
-          <View style={styles.buttonSection}>
-            <TouchableOpacity style={styles.button}>
-              <Card style={styles.cancel}>
-                <Text style={styles.buttonText}>Cancel Bill</Text>
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Card style={styles.update}>
-                <Text style={styles.buttonText}>Update Bill</Text>
-              </Card>
-            </TouchableOpacity>
-          </View>
-
-          
-          
-          {/* <View style={styles.buttonSection}>
-            <Button style={styles.opaqueButton}>           
-              Save
-            </Button>
-          </View> */}
-        </View>
+        <Card noAnimation style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => null}>
+            <Text> Confirm Bill </Text>
+          </TouchableOpacity>
+        </Card>
       </ScrollView>
+      </View>
     );
   }
 }
 
+
+const BillTitle = ({ tableName, date }) => {
+  return (
+    
+    <Card noAnimation style={styles.billTitleContainer}>
+      <Text style={{ fontSize: 17, fontWeight: '600', color: 'white' }}>Items</Text>
+      <Text style={{ fontSize: 17, fontWeight: '600', color: 'white' }}>UnitPrice(NRs.)</Text>
+      <Text style={{ fontSize: 17, fontWeight: '600', color: 'white' }}>Price(NRs.)</Text>
+      <Text style={{ fontSize: 17, fontWeight: '600', color: 'white' }}>Quantity</Text>
+    </Card>
+  );
+};
+
+BillTitle.defaultProps = {
+  tableName: 'Table Unknown',
+  date: 'Monday, December 12',
+};
+
+
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: colors.lightBackground,
-    backgroundColor: 'white',
-    paddingTop: 30,
-    paddingBottom: 50,    
+    backgroundColor: colors.lightBackground,
+    flex: 1,
   },
-  headerBar: {
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: font.larger,
-    fontFamily: Platform.OS === 'ios' ? 'ChalkboardSE-Regular' : 'Roboto',
-    marginBottom: 20,
-    color: colors.textPrimary,
-    fontWeight: 'bold',
-  },
-  orders: {
-    marginBottom: 10,
-  },
-  order: {
-    color: colors.textLight,
-    fontWeight: '600',
-  },
-  time: {
-    color: colors.textLight,
-    fontWeight: '600',
-  },
-  meta: {
-    marginBottom: 10,
-  },
-  bold: {
-    // fontWeight: 'bold',
-    color: '#5C6E7C',
-  },
-  billInfo: {
-    paddingTop: 15,
-  },
-  singleInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',    
-    alignItems: 'center',
-    backgroundColor: colors.primary,    
-    paddingHorizontal: 18,      
-    minHeight:50,
-  },
-  priceInfo: {    
-    flexDirection: 'column',    
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',  
-    paddingVertical: 10,  
-  },
-  singleContainer: {  
-    justifyContent: 'space-between',    
-    flexDirection: 'row',    
-    width: '100%',    
-    paddingHorizontal: 18,
-    paddingVertical: 7,
-  },
-  billTitle: {    
-    color: colors.textPrimary,
-    fontSize: font.regular,
-  },
-  price: {
-    color: colors.textPrimary,
-    fontSize: font.large,
-  },
-  total: {
-    fontSize: font.large,
-    fontWeight: 'bold',
-    color: '#1A2F40',
-  },
-  opaqueButton: {
-    padding: 10,
-    maxHeight: 50,
-  },
-  buttonSection: {
-    flexDirection: 'row',    
-    justifyContent: 'space-between',        
-    flex:1,
-    marginTop:20,
-  },
-  button: {   
-    flex:1,       
-  },
-  update: {
+  billTitleContainer: {
     backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',    
-    minHeight: 50
+    height: 30,
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    marginRight: 5,
+    marginLeft: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+  } ,
+  vatBillContainer: {
+    backgroundColor: colors.lightBackground,
+    flexDirection: 'column',
+    marginLeft: 5,
+    marginRight: 5,
+    height: 100,
+    marginTop: 20,
+    
   },
-  cancel: {
-    backgroundColor: '#E91E63',
-    alignItems: 'center',
-    justifyContent: 'center',   
-    minHeight: 50
+  vatBillItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    width: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 2,
+    paddingBottom: 5,
+    marginTop: 5,
+    
   },
-  buttonText: {
-    color: 'white',
-    fontSize: font.large,
-  },  
+  leftText: {
+    fontWeight: '600',
+  },
+  rightText: {
+    fontWeight: '600',
+  },
+  buttonContainer: {
+    backgroundColor: 'red'
+  }
 });
 
 export {

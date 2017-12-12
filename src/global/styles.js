@@ -11,6 +11,7 @@ const colors = {
   lightBackground: '#ebf1f8',
   backgroundColor: Platform.OS === 'ios' ? 'white' : '#ebf1f8',
   cardColor: Platform.OS === 'ios' ? 'white' : '#ebf1f8',
+  lightBrown: '#F0F0F1',
 };
 
 const shadow = {
