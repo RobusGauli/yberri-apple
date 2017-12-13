@@ -5,14 +5,40 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { colors, font, shadow } from 'global';
 
 class Table extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      showPrice: false,
+    }
+
+    // setInterval(() => {
+    //     
+    //   this.setState({showPrice: !this.state.showPrice})
+    
+    // }, 5000);
+  }
+
+  _onInfoPress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    this.setState({ showPrice: true })
+    setTimeout(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      this.setState({ showPrice: false })
+    }, 5000)
+  }
   
   render() {
+    const {
+      showPrice,
+    } = this.state;
+
     const {
       tableName,
       isBusy,
@@ -25,13 +51,19 @@ class Table extends React.Component {
       onPress,
     } = this.props;
     return (
+      <View>
+
       <TouchableOpacity style={[styles.container, { backgroundColor: isBusy ? 'rgba(0, 0, 200, 0.07)' : 'white', ...shadow }]} onPress={onPress && (() => onPress(tableName, { isBusy, totalOrders, fullFilledOrders, aboutTheCustomer, tableBusyPeriod, tableName, orderData }))}>
         <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
           <View style={{ marginLeft: 10, flexDirection: 'row',flex: 1, width: '100%', alignItems: 'center' }}>
             <Text style={styles.busyText}>{isBusy ? 'Busy' : 'Free'}</Text>
             <Text style={styles.aboutCustomerText}>{aboutTheCustomer.toUpperCase()}</Text>
         </View>
+          <TouchableOpacity style={{padding: 10, flexDirection: 'row'}} onPress={this._onInfoPress}>
           <Icon name={isBusy ? 'lock' : 'unlock-alt'} size={20} style={{ marginRight: 20 }} color={colors.textPrimary}/>
+          <Icon name='info' size={20} style={{ marginRight: 20 }} color={colors.textPrimary}/>
+          
+          </TouchableOpacity>
         </View>
         <View style={{ marginLeft: 10, flexDirection: 'row', alignItems: 'center', width: '100%' , justifyContent: 'space-between', paddingRight: 20 }}>
           <Text style={styles.timeText}>{tableBusyPeriod}</Text>
@@ -39,14 +71,25 @@ class Table extends React.Component {
             <Text style={styles.tableText}>{tableName}</Text>
           </View>
         </View>
-        {!removeLastBlock && 
-        <View style={{ marginRight: 10, width: '100%', minHeight: 60, flexDirection: 'row', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, backgroundColor: colors.lightBrown }}>
-          <MiniBox name='TOTAL ORDERS' value={totalOrders} />
-          <MiniBox name='COMPLETED' value={fullFilledOrders} />
-          <MiniBox name= 'REMAINING' value={ parseInt(totalOrders, 10) - parseInt(fullFilledOrders, 10) } />
+        
+        <View>
+           
+            <View style={{ marginRight: 10, width: '100%', minHeight: 60, flexDirection: 'row', borderBottomLeftRadius: 15, borderBottomRightRadius: 15, backgroundColor: colors.lightBrown }}>
+              {!showPrice && <MiniBox name='TOTAL ORDERS' value={totalOrders} />}
+              {!showPrice && <MiniBox name='COMPLETED' value={fullFilledOrders} />}
+              {!showPrice && <MiniBox name= 'REMAINING' value={ parseInt(totalOrders, 10) - parseInt(fullFilledOrders, 10) } />}
+              {showPrice && <MiniBox name='TOTAL ITEMS' value={5} />}
+              {showPrice && <MiniBox name='TOTAL QUANTITY' value='30' />}
+              {showPrice && <MiniBox name='TOTAL PRICE' value='Rs.3000/-' />}
+              
+            </View>
+          
+          {/* <View style={{backgroundColor: colors.lightBrown, minHeight: 60, position: 'absolute', justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: 'rgba(0, 0, 0, 0)'}}>
+              <Text> :ove </Text>
+          </View> */}
         </View>
-        }
       </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -83,8 +126,8 @@ const MiniBox = ({ name, value }) => {
 };
 
 MiniBox.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  name: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -61,12 +61,18 @@ class BillScreen extends Component {
             <Text style={styles.rightText}> Rs.1000 </Text>
           </View>
         </Card>
-
-        <Card noAnimation style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => null}>
-            <Text> Confirm Bill </Text>
-          </TouchableOpacity>
-        </Card>
+        <TouchableOpacity onPress={() => null}>
+          <Card noAnimation style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>Confirm</Text>
+          </Card>
+        </TouchableOpacity>
+        <View style={{height: 10}} />
+        <TouchableOpacity onPress={() => null}>
+          <Card noAnimation style={[styles.buttonContainer, {backgroundColor: 'rgba(240,98,146 ,1)'}]}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Card>
+        </TouchableOpacity>
+        <View style={{marginTop: 50}} />
       </ScrollView>
       </View>
     );
@@ -135,8 +141,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   buttonContainer: {
-    backgroundColor: 'red'
-  }
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    height: 45
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'white',
+  },
 });
 
 export {
